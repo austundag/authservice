@@ -1,0 +1,30 @@
+{
+  "name": "@supmount/authservice",
+  "version": "1.0.0",
+  "description": "Authorization Service",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/austundag/authservice.git"
+  },
+  "author": "Afsin Ustundag",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/austundag/authservice/issues"
+  },
+  "homepage": "https://github.com/austundag/authservice#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "lodash": "^4.17.20",
+    "pg": "^8.5.1",
+    "sequelize": "^6.3.5"
+  }
+}
