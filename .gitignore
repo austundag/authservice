@@ -105,3 +105,6 @@ dist
 
 # vscode
 .vscode
+
+# override config
+config/local.*

@@ -6,8 +6,8 @@
         origin: '*',
     },
     db: {
-        database: 'recregtest',
-        options: {
+         options: {
+            database: 'recregtest',
             pool: {
                 idle: 1000,
             },

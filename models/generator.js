@@ -4,7 +4,7 @@ import config from 'config';
 const { Sequelize, Model } = sequelize;
 
 const generate = function() {
-    const sequelize = new Sequelize(config.get('db.database'), config.get('db.username'), config.get('db.password'), config.get('db.options'));
+    const sequelize = new Sequelize(config.get('db.options'));
 
     class User extends Model {}
     User.init({
