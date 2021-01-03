@@ -8,9 +8,9 @@
         jwtTokenExpirationMinutes: 'SM_AUTH_TOKEN_EXPIRATION_MINTUES',
     },
     db: {
-        name: 'SM_AUTH_DB_NAME',
-        user: 'SM_AUTH_DB_USER',
-        pass: 'SM_AUTH_DB_PASS',
+        database: 'SM_AUTH_DB_NAME',
+        username: 'SM_AUTH_DB_USER',
+        password: 'SM_AUTH_DB_PASS',
         schema: 'SM_AUTH_DB_SCHEMA',
         options: {
             host: 'SM_AUTH_DB_HOST',
