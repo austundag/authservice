@@ -1,12 +1,10 @@
 import sequelize from 'sequelize';
+import config from 'config';
 
 const { Sequelize, Model } = sequelize;
 
 const generate = function() {
-    const sequelize = new Sequelize('recreg', 'postgres', 'postgres', {
-        dialect: 'postgres',
-        host: 'localhost'
-    });
+    const sequelize = new Sequelize(config.get('db.name'), config.get('db.user'), config.get('db.pass'), config.get('db.options'));
 
     class User extends Model {}
     User.init({

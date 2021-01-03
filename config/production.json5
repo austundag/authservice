@@ -1,0 +1,9 @@
+{
+    db: {
+        options: {
+            dialectOptions: {
+                ssl: true,
+            },
+        },
+    },
+}

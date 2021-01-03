@@ -1,0 +1,47 @@
+ {
+    env: 'NODE_ENV',
+    cors: {
+        origin: 'SM_AUTH_CORS_ORIGIN',
+    },
+    jwt: {
+        secret: 'SM_AUTH_CLIENT_SECRET',
+        jwtTokenExpirationMinutes: 'SM_AUTH_TOKEN_EXPIRATION_MINTUES',
+    },
+    db: {
+        name: 'SM_AUTH_DB_NAME',
+        user: 'SM_AUTH_DB_USER',
+        pass: 'SM_AUTH_DB_PASS',
+        schema: 'SM_AUTH_DB_SCHEMA',
+        options: {
+            host: 'SM_AUTH_DB_HOST',
+            port: 'SM_AUTH_DB_PORT',
+            dialect: 'SM_AUTH_DB_DIALECT',
+            dialectOptions: {
+                ssl: 'SM_AUTH_DB_SSL',
+            },
+            pool: {
+                max: 'SM_AUTH_DB_POOL_MAX',
+                min: 'SM_AUTH_DB_POOL_MIN',
+                idle: 'SM_AUTH_DB_POOL_IDLE',
+            },
+        },
+    },
+    port: 'SM_AUTH_PORT',
+    superUser: {
+        username: 'SM_AUTH_SUPER_USER_USERNAME',
+        password: 'SM_AUTH_SUPER_USER_PASSWORD',
+        email: 'SM_AUTH_SUPER_USER_EMAIL',
+    },
+    logging: {
+        level: 'SM_AUTH_LOGGING_LEVEL',
+    },
+    crypt: {
+        hashrounds: 'SM_AUTH_CRYPT_HASHROUNDS',
+        resetTokenLength: 'SM_AUTH_CRYPT_RESET_TOKEN_LENGTH',
+        resetPasswordLength: 'SM_AUTH_CRYPT_RESET_PASSWORD_LENGTH',
+        resetExpires: 'SM_AUTH_CRYPT_RESET_EXPIRES',
+        resetExpiresUnit: 'SM_AUTH_CRYPT_RESET_EXPIRES_UNIT',
+    },
+    clientBaseUrl: 'SM_AUTH_CLIENT_BASE_URL',
+    tmpDirectory: 'SM_AUTH_TMP_DIRECTORY',
+}

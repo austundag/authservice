@@ -1,0 +1,42 @@
+{
+    env: 'development',
+    cors: {
+        origin: 'http://localhost:4000',
+    },
+    db: {
+        name: 'recreg',
+        user: 'postgres',
+        pass: 'postgres',
+        schema: 'public',
+        options: {
+            host: 'localhost',
+            port: '5432',
+            dialect: 'postgres',
+            dialectOptions: {
+                ssl: false,
+            },
+            pool: {
+                max: 5,
+                min: 0,
+                idle: 10000,
+            },
+        },
+    },
+    superUser: {
+        username: 'super',
+        password: 'Am!d@2017PW',
+        email: 'rr_demo@amida.com',
+    },
+    logging: {
+        level: 'info',
+    },
+    crypt: {
+        hashrounds: 10,
+        resetTokenLength: 20,
+        resetPasswordLength: 10,
+        resetExpires: 3600,
+        resetExpiresUnit: 'seconds',
+    },
+    // TODO: Linux vs Windows vs deployed environment pathing needs to be addressed
+    tmpDirectory: '/tmp',
+}
