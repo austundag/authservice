@@ -1,14 +1,14 @@
 import chai from 'chai';
 import _ from 'lodash';
 
-// import errHandler from './err-handler-spec';
+import errHandler from './err-handler-spec.js';
 
 const { expect } = chai;
 
 export default class SharedSpec {
     constructor(generator) {
         this.generator = generator || new Generator();
-        // this.throwingHandler = errHandler.throwingHandler;
+        this.throwingHandler = errHandler.throwingHandler;
     }
 
     initModels(models) {

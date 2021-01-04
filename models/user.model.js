@@ -4,6 +4,8 @@ import crypto from 'crypto';
 import moment from 'moment';
 import config from 'config';
 
+import AuthError from '../lib/auth-error.js';
+
 export default function Authorized({ sequelize, Sequelize, schema = 'public' }) {
     const bccompare = util.promisify(bcrypt.compare, {
         context: bcrypt,
@@ -119,7 +121,7 @@ export default function Authorized({ sequelize, Sequelize, schema = 'public' }) 
         return bccompare(password, this.password)
             .then((result) => {
                 if (!result) {
-                    throw new RRError('authenticationError');
+                    throw new AuthError('authenticationError');
                 }
             });
     };

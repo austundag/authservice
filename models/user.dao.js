@@ -5,11 +5,11 @@ import moment from 'moment';
 import _ from 'lodash';
 import afssequelize from 'afssequelize';
 
+import AuthError from '../lib/auth-error.js';
+
 const { Base } = afssequelize;
 
-//const RRError = require('../../lib/rr-error');
-
-const { Sequelize: Op } = sequelize;
+const { Sequelize: { Op } } = sequelize;
 
 const attributes = [
     'id', 'username', 'email', 'role', 'firstname', 'lastname', 'institution', 'createdAt',
@@ -23,7 +23,7 @@ export default class UserDAO extends Base {
     createUser(newUser, transaction) {
         const options = transaction ? { transaction } : {};
         if (newUser.username === newUser.email) {
-            return RRError.reject('userIdenticalUsernameEmail');
+            return AuthError.reject('userIdenticalUsernameEmail');
         }
         const user = { ...newUser };
         if (!user.username) {
@@ -66,7 +66,7 @@ export default class UserDAO extends Base {
                 const fields = { ...userPatch };
                 if (user.username === user.email.toLowerCase()) {
                     if (Object.prototype.hasOwnProperty.call(fields, 'username')) {
-                        return RRError.reject('userNoUsernameChange');
+                        return AuthError.reject('userNoUsernameChange');
                     }
                     if (Object.prototype.hasOwnProperty.call(fields, 'email')) {
                         fields.username = fields.email.toLowerCase();
@@ -90,7 +90,7 @@ export default class UserDAO extends Base {
         return this.db.User.findOne({ where })
             .then((user) => {
                 if (!user) {
-                    return RRError.reject('invalidEmail');
+                    return AuthError.reject('invalidEmail');
                 }
                 return user.updateResetPWToken();
             });
@@ -101,12 +101,12 @@ export default class UserDAO extends Base {
         return User.findOne({ where: { resetPasswordToken } })
             .then((user) => {
                 if (!user) {
-                    return RRError.reject('invalidOrExpiredPWToken');
+                    return AuthError.reject('invalidOrExpiredPWToken');
                 }
                 const expires = user.resetPasswordExpires;
                 const mExpires = moment.utc(expires);
                 if (moment.utc().isAfter(mExpires)) {
-                    return RRError.reject('invalidOrExpiredPWToken');
+                    return AuthError.reject('invalidOrExpiredPWToken');
                 }
                 Object.assign(user, { password });
                 return user.save();

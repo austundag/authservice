@@ -3,6 +3,7 @@ import config from 'config';
 
 import Authorized from './user.model.js';
 import UserDAO from './user.dao.js';
+import AuthDAO from './auth.dao.js';
 
 const { Sequelize, Model } = sequelize;
 
@@ -14,6 +15,7 @@ const generate = function() {
         sequelize,
         User,
         user: new UserDAO({ sequelize, User }),
+        auth: new AuthDAO({ sequelize, User }),
     }
 };
 
