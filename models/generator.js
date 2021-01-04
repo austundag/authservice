@@ -1,19 +1,13 @@
 import sequelize from 'sequelize';
 import config from 'config';
 
+import Authorized from './user.model.js';
+
 const { Sequelize, Model } = sequelize;
 
 const generate = function() {
     const sequelize = new Sequelize(config.get('db.options'));
-
-    class User extends Model {}
-    User.init({
-        username: Sequelize.STRING,
-        birthday: Sequelize.DATE
-    }, {
-        sequelize,
-        modelName: 'user'
-    });
+    const User = Authorized({ sequelize, Sequelize });
 
     return {
         sequelize,

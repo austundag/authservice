@@ -15,6 +15,9 @@ describe('authorized unit', async function authorizedUnit() {
     it('add authorized', async function addAuthorized() {
         authorized = await models.User.create({
             username: 'janedoe',
+            email: 'janedoe@gmail.com',
+            password: 'dddddddddd',
+            role: 'admin',
             birthday: new Date(1980, 6, 20),
         });
     });
@@ -23,7 +26,7 @@ describe('authorized unit', async function authorizedUnit() {
         const id = authorized.id;
         const actual = await models.User.findByPk(id, {
             raw: true,
-            attributes: ['id', 'username', 'birthday'],
+            attributes: ['id', 'username', 'email', 'password'],
         });
 
         console.log(actual);
