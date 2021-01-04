@@ -2,4 +2,7 @@
     jwt: {
         secret: 'this is a secret',
     },
+    logging: {
+        level: 'fatal',
+    },
 }

@@ -14,5 +14,8 @@
         },
     },
     tmpDirectory: '../test/generated',
+    logging: {
+        level: 'fatal',
+    },
 }
 

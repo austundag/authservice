@@ -5,10 +5,15 @@ import Authorized from './user.model.js';
 import UserDAO from './user.dao.js';
 import AuthDAO from './auth.dao.js';
 
+import logger from '../logger.js';
+
 const { Sequelize, Model } = sequelize;
 
 const generate = function() {
-    const sequelize = new Sequelize(config.get('db.options'));
+    const logging = (message) => logger.info(message);
+    const options = Object.assign({ logging }, config.get('db.options'));
+ 
+    const sequelize = new Sequelize(options);
     const User = Authorized({ sequelize, Sequelize });
 
     return {
