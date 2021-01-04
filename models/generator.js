@@ -2,6 +2,7 @@ import sequelize from 'sequelize';
 import config from 'config';
 
 import Authorized from './user.model.js';
+import UserDAO from './user.dao.js';
 
 const { Sequelize, Model } = sequelize;
 
@@ -12,6 +13,7 @@ const generate = function() {
     return {
         sequelize,
         User,
+        user: new UserDAO({ sequelize, User }),
     }
 };
 
