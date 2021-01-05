@@ -7,18 +7,39 @@ const { expect } = chai;
 
 export default class SharedSpec {
     constructor(generator) {
-        this.generator = generator || new Generator();
         this.throwingHandler = errHandler.throwingHandler;
     }
 
-    initModels(models) {
+    initModels(models, authorizedGenerator) {
         this.models = models;
+        this.authorizedGenerator =  authorizedGenerator;
     }
 
     setUpFn(force = true) {
         const m = this.models;
         return function setUp() {
             return m.sequelize.sync({ force });
+        };
+    }
+
+    createUserFn(hxUser, override) {
+        const self = this;
+        return function createUser() {
+            const user = self.authorizedGenerator.newUser(override);
+            return self.models.user.createUser(user)
+                .then(({ id }) => {
+                    const server = { id, ...user };
+                    hxUser.push(user, server);
+                });
+        };
+    }
+
+    authenticateUserFn(hxUser, index) {
+        const self = this;
+        return function authenticateUser() {
+            const client = hxUser.client(index);
+            const username = client.username || client.email;
+            return self.models.auth.authenticateUser(username, client.password);
         };
     }
 
