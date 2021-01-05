@@ -1,8 +1,7 @@
-process.env.NODE_ENV = 'test';
+process.env['NODE_ENV'] = 'test';
 
 import chai from 'chai';
 import _ from 'lodash';
-import config from 'config';
 
 import SharedSpec from './util/shared-spec.js';
 import History from './util/history.js';
@@ -359,29 +358,12 @@ describe('user unit', function userUnit() {
     it('error: reset password token for invalid email', () => models.user.resetPasswordToken('a@a.com')
         .then(shared.throwingHandler, shared.expectedErrorHandler('invalidEmail')));
 
-    let resetExpires;
-    let resetExpiresUnit;
-
-    xit('reduce password token expiration duration', () => {
-        // eslint-disable-next-line prefer-destructuring
-        resetExpires  = config.get(crypt.resetExpires);
-        // eslint-disable-next-line prefer-destructuring
-        resetExpiresUnit = config.get('crypt.resetExpiresUnit');
-        config.crypt.resetExpires = 250;
-        config.crypt.resetExpiresUnit = 'ms';
-    });
-
-    xit('get reset password token for user 0', resetPasswordTokenFn(0));
-    xit('delay to cause password token expiration', function delayFrExpiration() {
+    it('get reset password token for user 0', resetPasswordTokenFn(0));
+    it('delay to cause password token expiration', function delayFrExpiration() {
         return new Promise((resolve) => setTimeout(resolve, 600));
     });
-    xit('error: reset password with expired reset token', () => models.user.resetPassword(tokens[0], 'newPassword')
+    it('error: reset password with expired reset token', () => models.user.resetPassword(tokens[0], 'newPassword')
         .then(shared.throwingHandler, shared.expectedErrorHandler('invalidOrExpiredPWToken')));
-
-    xit('restore password token expiration duraction', () => {
-        config.crypt.resetExpires = resetExpires;
-        config.crypt.resetExpiresUnit = resetExpiresUnit;
-    });
 
     const patchUserFn = function (index, userPatch) {
         return function patchUser() {

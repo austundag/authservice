@@ -13,9 +13,12 @@
             },
         },
     },
+    crypt: {
+        resetExpires: 250,
+        resetExpiresUnit: 'ms',
+    },
     tmpDirectory: '../test/generated',
     logging: {
         level: 'fatal',
     },
 }
-

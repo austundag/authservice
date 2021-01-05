@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "npm test"
+    "test": "cross-env NODE_ENV=test ./node_modules/mocha/bin/_mocha -t 10000 --exit --bail test/*.js",
+    "select-test": "cross-env NODE_ENV=test ./node_modules/mocha/bin/_mocha -t 10000 --exit --bail" 
   },
   "repository": {
     "type": "git",
