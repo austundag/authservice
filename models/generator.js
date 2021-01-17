@@ -7,7 +7,7 @@ import AuthDAO from './auth.dao.js';
 
 import logger from '../logger.js';
 
-const { Sequelize, Model } = sequelize;
+const { Sequelize } = sequelize;
 
 const generate = function() {
     const logging = (message) => logger.info(message);

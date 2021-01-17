@@ -1,4 +1,4 @@
-process.env['NODE_ENV'] = 'test';
+/* global describe,before,it */
 
 import chai from 'chai';
 import _ from 'lodash';
@@ -15,8 +15,7 @@ const authorizedGenerator = new AuthorizedGenerator();
 
 describe('user unit', function userUnit() {
     let models;
-    let authorized;
-    const shared =  new SharedSpec(authorizedGenerator);;
+    const shared =  new SharedSpec(authorizedGenerator);
 
     let userCount = 8;
 

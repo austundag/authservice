@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "cross-env NODE_ENV=test ./node_modules/mocha/bin/_mocha -t 10000 --exit --bail test/*.js",
-    "select-test": "cross-env NODE_ENV=test ./node_modules/mocha/bin/_mocha -t 10000 --exit --bail"
+    "select-test": "cross-env NODE_ENV=test ./node_modules/mocha/bin/_mocha -t 10000 --exit --bail",
+    "beautify": "npx eslint . --ext js --fix"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "homepage": "https://github.com/austundag/authservice#readme",
   "devDependencies": {
     "chai": "^4.2.0",
+    "eslint": "^7.18.0",
     "i18next-express-middleware": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "mocha": "^8.2.1",

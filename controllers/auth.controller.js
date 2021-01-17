@@ -36,4 +36,4 @@ export function authenticateBasic(req, res, next) {
             next(err);
         }
     });
-};
+}

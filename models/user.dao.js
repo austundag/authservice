@@ -133,4 +133,4 @@ export default class UserDAO extends Base {
                 return userIdMap;
             });
     }
-};
+}

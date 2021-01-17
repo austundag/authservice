@@ -154,4 +154,4 @@ export default function Authorized({ sequelize, Sequelize, schema = 'public' }) 
     };
 
     return Table;
-};
+}

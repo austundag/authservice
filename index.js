@@ -1,11 +1,9 @@
-'use strict';
-
 /* eslint no-console: 0 */
 
-const config = require('./config');
+import config from './config';
 
-const app = require('./app');
-const appgen = require('./app-generator');
+import app from './app';
+import appgen from './app-generator';
 
 appgen.initialize(app, {}, (err) => {
     if (err) {
@@ -17,4 +15,4 @@ appgen.initialize(app, {}, (err) => {
     }
 });
 
-module.exports = app;
+export default app;

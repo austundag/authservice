@@ -48,4 +48,4 @@ export default class AuthDAO extends Base {
                 return AuthError.reject('authenticationError');
             });
     }
-};
+}

@@ -1,5 +1,3 @@
-'use strict';
+import appGenerator from './app-generator';
 
-const appGenerator = require('./app-generator');
-
-module.exports = appGenerator.newExpress();
+export default appGenerator.newExpress();

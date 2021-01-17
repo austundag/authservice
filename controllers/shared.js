@@ -58,4 +58,4 @@ export function handleError(req, res) {
         }
         return res.status(500).json(json);
     };
-};
+}

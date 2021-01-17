@@ -136,4 +136,4 @@ export default class RRSupertest {
         }
         return r.expect(status);
     }
-};
+}

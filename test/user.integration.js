@@ -1,3 +1,4 @@
+/* global describe,before,it */
 /* eslint no-param-reassign: 0, max-len: 0 */
 
 import chai from 'chai';
