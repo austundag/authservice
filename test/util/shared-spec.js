@@ -6,7 +6,7 @@ import errHandler from './err-handler-spec.js';
 const { expect } = chai;
 
 export default class SharedSpec {
-    constructor(generator) {
+    constructor() {
         this.throwingHandler = errHandler.throwingHandler;
     }
 

@@ -3,6 +3,7 @@
 import chai from 'chai';
 
 import AuthError from '../../lib/auth-error.js';
+import i18n from '../../i18n.js';
 
 const { expect } = chai;
 
@@ -34,8 +35,26 @@ const expectedSeqErrorHandlerFn = function (name, fields) {
     };
 };
 
+const verifyErrorMessage = async function (res, code, ...params) {
+    await i18n.changeLanguage('en');
+    const expected = (new AuthError(code, ...params)).getMessage(i18n);
+    expect(expected).to.not.equal(code);
+    expect(expected).to.not.equal(unknownError.getMessage(i18n));
+    expect(res.body.message).to.equal(expected);
+};
+
+const verifyErrorMessageLang = async function (res, language, code, ...params) {
+    await i18n.changeLanguage(language);
+    const expected = (new AuthError(code, ...params)).getMessage(i18n);
+    expect(expected).to.not.equal(code);
+    expect(expected).to.not.equal(unknownError.getMessage(i18n));
+    expect(res.body.message).to.equal(expected);
+};
+
 export default {
     throwingHandler,
     expectedErrorHandlerFn,
     expectedSeqErrorHandlerFn,
+    verifyErrorMessage,
+    verifyErrorMessageLang,
 };

@@ -39,4 +39,5 @@
     },
     // TODO: Linux vs Windows vs deployed environment pathing needs to be addressed
     tmpDirectory: '/tmp',
+    constantContact: null,
 }
