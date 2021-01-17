@@ -1,20 +1,32 @@
+import axios from 'axios';
 import _ from 'lodash';
+import config from 'config';
 
 import * as shared from './shared.js';
 
-// import * as sendMail from '../lib/email.js';
-
-export function createNewUser(req, res) {
+export async function createNewUser(req, res) {
     const newUser = req.body;
     if (!newUser.role) {
         newUser.role = 'participant';
     }
-    return req.models.user.createUser(newUser)
-        .then(({ id }) => {
-            // sendMail(newUser, 'new_contact', {});
-            res.status(201).json({ id });
-        })
-        .catch(shared.handleError(req, res));
+    try {
+        const { id } = await req.models.user.createUser(newUser);
+        const url = config.get('hook.create.url');
+        if (url) {
+            const additionalData = config.get('hook.create.additionalData');
+            const data = Object.assign({}, newUser, additionalData);
+            const axiosConfig = {
+                url,
+                method: 'POST',
+                header: { 'Content-Type': 'application/json' },
+                data,
+            };
+            await axios.request(axiosConfig);
+        }
+        res.status(201).json({ id });
+    } catch(err) {
+        shared.handleError(req, res)(err);
+    }
 }
 
 export function getUser(req, res) {

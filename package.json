@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "cross-env NODE_ENV=test ./node_modules/mocha/bin/_mocha -t 10000 --exit --bail test/*.js",
-    "select-test": "cross-env NODE_ENV=test ./node_modules/mocha/bin/_mocha -t 10000 --exit --bail",
+    "test": "cross-env NODE_ENV=test ALLOW_CONFIG_MUTATIONS=true npx mocha -t 10000 --exit --bail test/*.js",
+    "select-test": "cross-env NODE_ENV=test ALLOW_CONFIG_MUTATIONS=true npx mocha -t 10000 --exit --bail",
     "beautify": "npx eslint . --ext js --fix"
   },
   "repository": {
@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "afssequelize": "0.0.3",
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.3",
     "cookie-parser": "^1.4.5",
@@ -43,7 +44,6 @@
     "passport": "^0.4.1",
     "passport-http": "^0.3.0",
     "pg": "^8.5.1",
-    "request": "^2.88.2",
     "sequelize": "^6.3.5",
     "winston": "^3.3.3"
   }
