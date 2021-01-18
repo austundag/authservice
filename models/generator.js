@@ -1,8 +1,8 @@
 import sequelize from 'sequelize';
 import config from 'config';
 
-import Authorized from './user.model.js';
-import UserDAO from './user.dao.js';
+import Authorized from './authorized.model.js';
+import AuthorizedDAO from './authorized.dao.js';
 import AuthDAO from './auth.dao.js';
 
 import logger from '../logger.js';
@@ -19,7 +19,7 @@ const generate = function() {
     return {
         sequelize,
         User,
-        user: new UserDAO({ sequelize, User }),
+        user: new AuthorizedDAO({ sequelize, User }),
         auth: new AuthDAO({ sequelize, User }),
     }
 };

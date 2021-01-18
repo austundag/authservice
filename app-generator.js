@@ -18,7 +18,7 @@ import i18n from './i18n.js';
 import generator from './models/generator.js';
 
 import * as authController from './controllers/auth.controller.js';
-import * as userController from './controllers/user.controller.js';
+import * as authorizedController from './controllers/authorized.controller.js';
 
 const errHandler = function (err, req, res, next) { // eslint-disable-line no-unused-vars
     logger.error(err);
@@ -59,12 +59,12 @@ const initialize = async function(app) {
 
     app.use('/auth/basic', authController.authenticateBasic);
 
-    app.get('/users/me', authorization('self'), userController.showCurrentUser);
-    app.patch('/users/me', authorization('self'), userController.updateCurrentUser);
-    app.post('/users', authorization('admin'), userController.createNewUser);
-    app.get('/users/:id', authorization('admin'), userController.getUser);
-    app.get('/users', authorization('admin'), userController.listUsers);
-    app.patch('/users/:id', authorization('admin'), userController.patchUser);
+    app.get('/authorizeds/me', authorization('self'), authorizedController.showCurrentUser);
+    app.patch('/authorizeds/me', authorization('self'), authorizedController.updateCurrentUser);
+    app.post('/authorizeds', authorization('admin'), authorizedController.createNewUser);
+    app.get('/authorizeds/:id', authorization('admin'), authorizedController.getUser);
+    app.get('/authorizeds', authorization('admin'), authorizedController.listUsers);
+    app.patch('/authorizeds/:id', authorization('admin'), authorizedController.patchUser);
 
     app.use(errHandler);
 

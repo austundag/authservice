@@ -24,7 +24,7 @@ describe('user integration', function userIntegration() {
     before(shared.setUpFn());
 
     it('error: get user without previous authentication', (done) => {
-        rrSuperTest.get('/users/me', true, 401).end(done);
+        rrSuperTest.get('/authorizeds/me', true, 401).end(done);
     });
 
     it('login as super', shared.loginFn(config.superUser));
@@ -34,10 +34,10 @@ describe('user integration', function userIntegration() {
     // .eyJpZCI6MiwidXNlcm5hbWUiOiJ1ZXN0Iiwicm9sZSI6bnVsbCwiaWF0
     // IjoxNDczNTAwNzE5LCJleHAiOjE0NzYwOTI3MTl9
     // .e0ymr0xrDPuQEBmdQLjb5-WegNtYcqAcpKp_DtDRKo8';
-    //    rrSuperTest.get('/users/me', jwt, 401).end(done);
+    //    rrSuperTest.get('/authorizeds/me', jwt, 401).end(done);
     // });
 
-    it('get super user', () => rrSuperTest.get('/users/me', true, 200)
+    it('get super user', () => rrSuperTest.get('/authorizeds/me', true, 200)
         .then((res) => {
             const user = res.body;
             expect(!user).to.equal(false);
@@ -48,7 +48,7 @@ describe('user integration', function userIntegration() {
     const getUserFn = function (index) {
         return function getUser() {
             const id = hxUser.id(index);
-            return rrSuperTest.get(`/users/${id}`, true, 200)
+            return rrSuperTest.get(`/authorizeds/${id}`, true, 200)
                 .then((res) => {
                     const client = hxUser.client(index);
                     comparator.user(client, res.body);
@@ -67,7 +67,7 @@ describe('user integration', function userIntegration() {
         it(`get user ${index}`, getUserFn(index));
     });
 
-    it('list all non admin users', () => rrSuperTest.get('/users', true, 200)
+    it('list all non admin users', () => rrSuperTest.get('/authorizeds', true, 200)
         .then((res) => {
             let expected = _.cloneDeep(hxUser.listServers());
             expected = _.sortBy(expected, 'username');
@@ -77,7 +77,7 @@ describe('user integration', function userIntegration() {
 
     const listUsersByRoleFn = function (role, range) {
         return function listUsersByRole() {
-            return rrSuperTest.get('/users', true, 200, { role })
+            return rrSuperTest.get('/authorizeds', true, 200, { role })
                 .then((res) => {
                     let expected = _.cloneDeep(hxUser.listServers(undefined, range));
                     expected = _.sortBy(expected, 'username');
@@ -94,7 +94,7 @@ describe('user integration', function userIntegration() {
 
     it('login as new user', shared.loginIndexFn(hxUser, 0));
 
-    it('get new user', () => rrSuperTest.get('/users/me', true, 200)
+    it('get new user', () => rrSuperTest.get('/authorizeds/me', true, 200)
         .then((res) => {
             const expectedUser = _.cloneDeep(hxUser.client(0));
             expectedUser.role = 'participant';
@@ -110,12 +110,12 @@ describe('user integration', function userIntegration() {
         const userEmailErr = _.cloneDeep(user);
         userEmailErr.email = 'notanemail';
         userEmailErr.username = `${user.username}1`;
-        return rrSuperTest.post('/users', userEmailErr, 400, undefined, true);
+        return rrSuperTest.post('/authorizeds', userEmailErr, 400, undefined, true);
     });
 
     it('error: create the same user', () => {
         const user = hxUser.client(0);
-        return rrSuperTest.post('/users', user, 400)
+        return rrSuperTest.post('/authorizeds', user, 400)
             .then((res) => shared.verifyErrorMessage(res, 'genericUnique', 'username', user.username));
     });
 
@@ -123,7 +123,7 @@ describe('user integration', function userIntegration() {
         const user = hxUser.client(0);
         const newUser = { ...user };
         newUser.username = 'anotherusername';
-        return rrSuperTest.post('/users', newUser, 400)
+        return rrSuperTest.post('/authorizeds', newUser, 400)
             .then((res) => shared.verifyErrorMessage(res, 'uniqueEmail'));
     });
 
@@ -131,7 +131,7 @@ describe('user integration', function userIntegration() {
 
     const verifySelfUserFn = function (index) {
         return function verifySelfUser() {
-            return rrSuperTest.get('/users/me', true, 200)
+            return rrSuperTest.get('/authorizeds/me', true, 200)
                 .then((res) => {
                     const expected = _.omit(hxUser.server(index), ['createdAt', 'firstname', 'institution', 'lastname']);
                     expect(res.body).to.deep.equal(expected);
@@ -142,7 +142,7 @@ describe('user integration', function userIntegration() {
     const patchSelfUserEmailFn = function (index) {
         return function patchSelfUserEmail() {
             const { email } = authorizedGenerator.newUser();
-            return rrSuperTest.patch('/users/me', { email }, 204)
+            return rrSuperTest.patch('/authorizeds/me', { email }, 204)
                 .then(() => {
                     const client = hxUser.client(index);
                     const server = hxUser.server(index);
@@ -165,7 +165,7 @@ describe('user integration', function userIntegration() {
     const verifyUserFn = function (index) {
         return function verifyUser() {
             const id = hxUser.id(index);
-            return rrSuperTest.get(`/users/${id}`, true, 200)
+            return rrSuperTest.get(`/authorizeds/${id}`, true, 200)
                 .then((res) => {
                     expect(res.body).to.deep.equal(hxUser.server(index));
                 });
@@ -176,7 +176,7 @@ describe('user integration', function userIntegration() {
         return function patchUserEmail() {
             const { email } = authorizedGenerator.newUser();
             const id = hxUser.id(index);
-            return rrSuperTest.patch(`/users/${id}`, { email }, 204)
+            return rrSuperTest.patch(`/authorizeds/${id}`, { email }, 204)
                 .then(() => {
                     const client = hxUser.client(index);
                     const server = hxUser.server(index);
@@ -205,7 +205,7 @@ describe('user integration', function userIntegration() {
         password: 'newone',
     };
 
-    it('update all user fields including password', () => rrSuperTest.patch('/users/me', userUpdate, 204));
+    it('update all user fields including password', () => rrSuperTest.patch('/authorizeds/me', userUpdate, 204));
 
     it('logout as new user', shared.logoutFn());
 
@@ -216,7 +216,7 @@ describe('user integration', function userIntegration() {
 
     it('login with updated password', shared.loginIndexFn(hxUser, 0));
 
-    it('verify updated user fields', () => rrSuperTest.get('/users/me', true, 200)
+    it('verify updated user fields', () => rrSuperTest.get('/authorizeds/me', true, 200)
         .then((res) => {
             const expected = _.cloneDeep(userUpdate);
             expected.role = 'participant';
@@ -226,7 +226,7 @@ describe('user integration', function userIntegration() {
             expect(res.body).to.deep.equal(expected);
         }));
 
-    it('verify updated user fields', () => rrSuperTest.get('/users/me', true, 200)
+    it('verify updated user fields', () => rrSuperTest.get('/authorizeds/me', true, 200)
         .then((res) => {
             const expected = _.pick(userUpdate, ['email']);
             const actual = _.omit(res.body, ['id', 'role', 'username']);
@@ -238,7 +238,7 @@ describe('user integration', function userIntegration() {
     const patchUserFn = function (index, userPatch) {
         return function patchUser() {
             const id = hxUser.id(index);
-            return rrSuperTest.patch(`/users/${id}`, userPatch, 204)
+            return rrSuperTest.patch(`/authorizeds/${id}`, userPatch, 204)
                 .then(() => {
                     const server = hxUser.server(index);
                     ['firstname', 'lastname'].forEach((key) => {

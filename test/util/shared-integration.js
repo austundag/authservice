@@ -137,67 +137,11 @@ export default class SharedIntegration {
             if (!user) {
                 user = generator.newUser(override);
             }
-            return rrSuperTest.post('/users', user, 201)
+            return rrSuperTest.post('/authorizeds', user, 201)
                 .then((res) => {
                     const server = { id: res.body.id, ...user };
                     history.push(user, server);
                 });
-        };
-    }
-
-    createSurveyProfileFn(survey) {
-        const { rrSuperTest } = this;
-        return function createSurveyProfile(done) {
-            rrSuperTest.post('/profile-survey', survey, 201)
-                .expect((res) => {
-                    expect(!!res.body.id).to.equal(true);
-                })
-                .end(done);
-        };
-    }
-
-    createConsentFn(hxConsent, hxConsentDocument, typeIndices) {
-        const { rrSuperTest } = this;
-        const { generator } = this;
-        return function createConsent(done) {
-            const sections = typeIndices.map((typeIndex) => hxConsentDocument.typeId(typeIndex));
-            const clientConsent = generator.newConsent({ sections });
-            rrSuperTest.post('/consents', clientConsent, 201)
-                .expect((res) => {
-                    hxConsent.pushWithId(clientConsent, res.body.id);
-                })
-                .end(done);
-        };
-    }
-
-    verifyConsentFn(hxConsent, index) {
-        const { rrSuperTest } = this;
-        return function verifyConsent(done) {
-            const id = hxConsent.id(index);
-            rrSuperTest.get(`/consents/${id}`, true, 200)
-                .expect((res) => {
-                    const expected = hxConsent.server(index);
-                    expect(res.body).to.deep.equal(expected);
-                })
-                .end(done);
-        };
-    }
-
-    signConsentTypeFn(hxConsentDocument, userIndex, typeIndex) {
-        const { rrSuperTest } = this;
-        return function signConsentType(done) {
-            const consentDocumentId = hxConsentDocument.id(typeIndex);
-            hxConsentDocument.sign(typeIndex, userIndex);
-            rrSuperTest.post('/consent-signatures', { consentDocumentId }, 201).end(done);
-        };
-    }
-
-    bulkSignConsentTypeFn(hxConsentDocument, userIndex, typeIndices) {
-        const { rrSuperTest } = this;
-        return function bulkSignConsentType(done) {
-            const consentDocumentIds = typeIndices.map((typeIndex) => hxConsentDocument.id(typeIndex));
-            typeIndices.forEach((typeIndex) => hxConsentDocument.sign(typeIndex, userIndex));
-            rrSuperTest.post('/consent-signatures/bulk', { consentDocumentIds }, 201).end(done);
         };
     }
 
