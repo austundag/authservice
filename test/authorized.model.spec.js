@@ -291,7 +291,7 @@ describe('user unit', function userUnit() {
                 email = testJsutil.oppositeCase(email);
             }
             return models.user.resetPasswordToken(email)
-                .then((token) => {
+                .then(({ token }) => {
                     expect(!!token).to.equal(true);
                     tokens[index] = token;
                 });

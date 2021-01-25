@@ -1,9 +1,7 @@
-/* eslint no-param-reassign: 0, max-len: 0 */
-
 import path from 'path';
 
-import session from 'supertest-session';
 import supertest from 'supertest';
+import session from 'supertest-session';
 import _ from 'lodash';
 
 export default class RRSupertest {
@@ -13,7 +11,6 @@ export default class RRSupertest {
         if (addlPath) {
             this.baseUrl += addlPath;
         }
-        this.userAudit = [];
         this.username = null;
     }
 
@@ -59,14 +56,7 @@ export default class RRSupertest {
         return jwt;
     }
 
-    getUserAudit() {
-        return this.userAudit;
-    }
-
-    update(operation, endpoint, payload, status, header, validationError) {
-        if (status < 401 && this.username && !validationError) {
-            this.userAudit.push({ username: this.username, operation, endpoint });
-        }
+    update(operation, endpoint, payload, status, header) {
         const r = this.server[operation](this.baseUrl + endpoint);
         if (header) {
             _.toPairs(header).forEach(([key, value]) => r.set(key, value));
@@ -79,9 +69,6 @@ export default class RRSupertest {
     }
 
     postFile(endpoint, field, filepath, payload, status) {
-        if (status < 401 && this.username) {
-            this.userAudit.push({ username: this.username, operation: 'post', endpoint });
-        }
         const filename = path.basename(filepath);
         const request = this.server
             .post(this.baseUrl + endpoint)
@@ -97,9 +84,6 @@ export default class RRSupertest {
     }
 
     put(endpoint, payload, status, query) {
-        if (status < 401 && this.username) {
-            this.userAudit.push({ username: this.username, operation: 'put', endpoint });
-        }
         let r = this.server.put(this.baseUrl + endpoint);
         if (query && !_.isEmpty(query)) {
             r = r.query(query);
@@ -116,9 +100,6 @@ export default class RRSupertest {
     }
 
     delete(endpoint, status, query) {
-        if (status < 401 && this.username) {
-            this.userAudit.push({ username: this.username, operation: 'delete', endpoint });
-        }
         let r = this.server.delete(this.baseUrl + endpoint);
         if (query) {
             r = r.query(query);
@@ -127,9 +108,6 @@ export default class RRSupertest {
     }
 
     get(endpoint, auth, status, query) {
-        if (status < 401 && this.username) {
-            this.userAudit.push({ username: this.username, operation: 'get', endpoint });
-        }
         let r = this.server.get(this.baseUrl + endpoint);
         if (query && !_.isEmpty(query)) {
             r = r.query(query);
