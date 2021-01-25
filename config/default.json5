@@ -43,6 +43,9 @@
         create: {
             url: '',
             additionalData: {},
-        }
+        },
+        resetPassword: {
+            url: '',
+        },
     },
 }

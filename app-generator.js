@@ -19,6 +19,7 @@ import generator from './models/generator.js';
 
 import * as authController from './controllers/auth.controller.js';
 import * as authorizedController from './controllers/authorized.controller.js';
+import * as resetPasswordController from './controllers/reset-token.controller.js';
 
 const errHandler = function (err, req, res, next) { // eslint-disable-line no-unused-vars
     logger.error(err);
@@ -59,12 +60,15 @@ const initialize = async function(app) {
 
     app.use('/auth/basic', authController.authenticateBasic);
 
+    app.use('/reset-password-token', resetPasswordController.resetToken);
+
     app.get('/authorizeds/me', authorization('self'), authorizedController.showCurrentUser);
     app.patch('/authorizeds/me', authorization('self'), authorizedController.updateCurrentUser);
     app.post('/authorizeds', authorization('admin'), authorizedController.createNewUser);
     app.get('/authorizeds/:id', authorization('admin'), authorizedController.getUser);
     app.get('/authorizeds', authorization('admin'), authorizedController.listUsers);
     app.patch('/authorizeds/:id', authorization('admin'), authorizedController.patchUser);
+    app.post('/authorizeds/password', authorizedController.resetPassword);
 
     app.use(errHandler);
 

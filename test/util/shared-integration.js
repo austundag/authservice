@@ -87,45 +87,6 @@ export default class SharedIntegration {
         };
     }
 
-    createProfileSurveyFn(hxSurvey) {
-        const { generator } = this;
-        const { rrSuperTest } = this;
-        return function createProfileSurvey(done) {
-            const clientSurvey = generator.newSurvey();
-            rrSuperTest.post('/profile-survey', clientSurvey, 201)
-                .end((err, res) => {
-                    if (err) {
-                        return done(err);
-                    }
-                    const { userId } = rrSuperTest;
-                    const server = { id: res.body.id, authorId: userId };
-                    Object.assign(server, clientSurvey);
-                    hxSurvey.push(clientSurvey, server);
-                    return done();
-                });
-        };
-    }
-
-    verifyProfileSurveyFn(hxSurvey, index) {
-        const { rrSuperTest } = this;
-        return function verifyProfileSurvey(done) {
-            rrSuperTest.get('/profile-survey', false, 200)
-                .expect((res) => {
-                    expect(res.body.exists).to.equal(true);
-                    const { survey } = res.body;
-                    const id = hxSurvey.id(index);
-                    expect(survey.id).to.equal(id);
-                    const expected = _.cloneDeep(hxSurvey.server(index));
-                    if (rrSuperTest.userRole !== 'admin') {
-                        delete expected.authorId;
-                    }
-                    comparator.survey(expected, survey);
-                    hxSurvey.updateServer(index, survey);
-                })
-                .end(done);
-        };
-    }
-
     createDirectUserFn(hxUser, override) {
         return this.sharedSpec.createUserFn(hxUser, override);
     }

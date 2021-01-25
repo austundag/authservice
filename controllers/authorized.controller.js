@@ -3,6 +3,7 @@ import _ from 'lodash';
 import config from 'config';
 
 import * as shared from './shared.js';
+import AuthError from '../lib/auth-error.js';
 
 export async function createNewUser(req, res) {
     const newUser = req.body;
@@ -63,7 +64,15 @@ export function updateCurrentUser(req, res) {
 }
 
 export function resetPassword(req, res) {
-    req.models.user.resetPassword(req.body.token, req.body.password)
-        .then(() => res.status(204).end())
+    const { token, password } = req.body;
+    if (!token) {
+        const err = new AuthError('invalidOrExpiredPWToken');
+        return shared.handleError(req, res)(err);
+    }
+
+    req.models.user.resetPassword(token, password)
+        .then((user) => {
+            res.status(204).end()
+        })
         .catch(shared.handleError(req, res));
 }

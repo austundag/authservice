@@ -92,7 +92,11 @@ export default class UserDAO extends Base {
                 if (!user) {
                     return AuthError.reject('invalidEmail');
                 }
-                return user.updateResetPWToken();
+                return user.updateResetPWToken()
+                    .then((token) => {
+                        const { username, firstname, lastname } = user;
+                        return { username, firstname, lastname, email, token };
+                    });
             });
     }
 
