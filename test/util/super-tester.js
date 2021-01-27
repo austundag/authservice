@@ -3,6 +3,7 @@ import path from 'path';
 import supertest from 'supertest';
 import session from 'supertest-session';
 import _ from 'lodash';
+import config from 'config';
 
 export default class RRSupertest {
     constructor(addlPath) {
@@ -52,7 +53,8 @@ export default class RRSupertest {
     }
 
     getJWT() {
-        const jwt = _.find(this.server.cookies, (cookie) => cookie.name === 'rr-jwt-token');
+        const cookieName = config.get('cookieName');
+        const jwt = _.find(this.server.cookies, (cookie) => cookie.name === cookieName);
         return jwt;
     }
 

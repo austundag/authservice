@@ -9,7 +9,7 @@ import config from 'config';
 import tokener from '../lib/tokener.js';
 
 import SharedIntegration from './util/shared-integration.js';
-import RRSuperTest from './util/rr-super-test.js';
+import SuperTester from './util/super-tester.js';
 import History from './util/history.js';
 import AuthorizedGenerator from './util/authorized-generator.js';
 
@@ -20,8 +20,8 @@ describe('auth integration', () => {
 
     const userCount = 4;
 
-    const rrSuperTest = new RRSuperTest();
-    const shared = new SharedIntegration(rrSuperTest, authorizedGenerator);
+    const superTester = new SuperTester();
+    const shared = new SharedIntegration(superTester, authorizedGenerator);
     const hxUser = new History();
 
     before(shared.setUpFn());
@@ -39,9 +39,9 @@ describe('auth integration', () => {
             if (!username) {
                 username = email;
             }
-            return rrSuperTest.authBasic({ username, password })
+            return superTester.authBasic({ username, password })
                 .then(() => {
-                    const jwtCookie = rrSuperTest.getJWT();
+                    const jwtCookie = superTester.getJWT();
                     return jwt.verify(jwtCookie.value, config.jwt.secret, {}, (err2, jwtObject) => {
                         if (err2) {
                             throw err2;
@@ -64,7 +64,7 @@ describe('auth integration', () => {
                 username = email;
             }
             username += `u${username}`;
-            return rrSuperTest.authBasic({ username, password }, 401)
+            return superTester.authBasic({ username, password }, 401)
                 .then((res) => shared.verifyErrorMessage(res, 'authenticationError'));
         };
     };
@@ -79,7 +79,7 @@ describe('auth integration', () => {
                 username = email;
             }
             password += 'a';
-            return rrSuperTest.authBasic({ username, password }, 401)
+            return superTester.authBasic({ username, password }, 401)
                 .then((res) => shared.verifyErrorMessage(res, 'authenticationError'));
         };
     };
@@ -87,7 +87,7 @@ describe('auth integration', () => {
     _.range(userCount).forEach((index) => {
         it(`user ${index} successfull login`, successfullLoginFn(index));
         it(`log out user ${index}`, () => {
-            rrSuperTest.resetAuth();
+            superTester.resetAuth();
         });
         it(`user ${index} wrong username`, wrongUsernameFn(index));
         it(`user ${index} wrong password`, wrongPasswordFn(index));
@@ -99,7 +99,7 @@ describe('auth integration', () => {
         });
         const { username, password } = hxUser.client(0);
 
-        rrSuperTest.authBasic({ username, password }, 500)
+        superTester.authBasic({ username, password }, 500)
             .end((err, res) => {
                 tokener.createJWT.restore();
                 if (err) {

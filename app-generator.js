@@ -39,7 +39,7 @@ const modelsSupplyFn = function (models) {
 };
 
 const authorization = function(role) {
-    return function authorizationImplementation(req, res, next) {  // eslint-disable-line no-unused-vars
+    return function authorizationImplementation(req, res, next) {
         const header = req.headers.authorization;
         security[role](req, null, header, function(err) {
             if (err) {
@@ -123,9 +123,10 @@ const newExpress = function() {
     app.enable('trust proxy');
     app.use(passport.initialize());
 
+    const cookieName = config.get('cookieName');
     app.use((req, res, next) => {
         const isAuth = req.url.indexOf('/auth/basic') >= 0;
-        const token = _.get(req, 'cookies.rr-jwt-token');
+        const token = _.get(req, `cookies.${cookieName}`);
         if (token && !isAuth) {
             _.set(req, 'headers.authorization', `Bearer ${token}`);
         }

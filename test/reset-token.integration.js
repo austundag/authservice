@@ -4,7 +4,7 @@ import chai from 'chai';
 import express from 'express';
 
 import SharedIntegration from './util/shared-integration.js';
-import RRSuperTest from './util/rr-super-test.js';
+import SuperTest from './util/super-tester.js';
 import History from './util/history.js';
 import AuthorizedGenerator from './util/authorized-generator.js';
 
@@ -15,8 +15,8 @@ const { expect } = chai;
 describe('reset-token integration', function resetTokenIntegration() {
     const authorizedGenerator = new AuthorizedGenerator();
 
-    const rrSuperTest = new RRSuperTest();
-    const shared = new SharedIntegration(rrSuperTest, authorizedGenerator);
+    const superTester = new SuperTest();
+    const shared = new SharedIntegration(superTester, authorizedGenerator);
     const userExample = authorizedGenerator.newUser();
     const hxUser = new History();
 
@@ -42,7 +42,7 @@ describe('reset-token integration', function resetTokenIntegration() {
 
     it('error: no reset password hook specified', function noSmtp() {
         const { email } = userExample;
-        return rrSuperTest.post('/reset-password-token', { email }, 500)
+        return superTester.post('/reset-password-token', { email }, 500)
             .then((res) => shared.verifyErrorMessage(res, 'resetPasswordHookMissing'));
     });
 
@@ -55,7 +55,7 @@ describe('reset-token integration', function resetTokenIntegration() {
 
     it('generate reset tokens', function resetToken2() {
         const { email } = userExample;
-        return rrSuperTest.post('/reset-password-token', { email }, 204);
+        return superTester.post('/reset-password-token', { email }, 204);
     });
 
     it('verify user can not login', shared.badLoginFn(userExample));
@@ -73,7 +73,7 @@ describe('reset-token integration', function resetTokenIntegration() {
 
     it('reset password', function resetPassword() {
         const password = 'newPassword';
-        return rrSuperTest.post('/authorizeds/password', { token, password }, 204);
+        return superTester.post('/authorizeds/password', { token, password }, 204);
     });
 
     it('verify user can not login with old password', shared.badLoginFn(userExample));

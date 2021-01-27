@@ -26,10 +26,11 @@ export function authenticateBasic(req, res, next) {
         }
         try {
             const token = tokener.createJWT(req.user);
+            const cookieName = config.get('cookieName');
             if (!config.jwt.jwtTokenExpirationMinutes) {
-                res.cookie('rr-jwt-token', token, { httpOnly: true });
+                res.cookie(cookieName, token, { httpOnly: true });
             } else {
-                res.cookie('rr-jwt-token', token, { httpOnly: true, maxAge: 1000 * 60 * config.jwt.jwtTokenExpirationMinutes });
+                res.cookie(cookieName, token, { httpOnly: true, maxAge: 1000 * 60 * config.jwt.jwtTokenExpirationMinutes });
             }
             return res.status(200).json({});
         } catch (err) {

@@ -1,18 +1,16 @@
 /* eslint no-console: 0 */
 
-import config from './config';
+import config from 'config';
 
-import app from './app';
-import appgen from './app-generator';
+import appgen from './app-generator.js';
 
-appgen.initialize(app, {}, (err) => {
-    if (err) {
-        console.log('Server failed to start due to error: %s', err);
-    } else {
-        app.listen(config.port, () => {
+appgen.generate()
+    .then((app) => {
+        const port = config.get('port');
+        app.listen(port, () => {
             console.log('Server started at ', config.port);
         });
-    }
-});
-
-export default app;
+    })
+    .catch((err) => { 
+        console.log('Server failed to start due to error: %s', err);
+    });

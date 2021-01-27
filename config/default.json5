@@ -48,4 +48,6 @@
             url: '',
         },
     },
+    port: 9005,
+    cookieName: 'sm-jwt-token',
 }

@@ -6,7 +6,7 @@ import express from 'express';
 
 import SharedIntegration from './util/shared-integration.js';
 import History from './util/history.js';
-import RRSuperTest from './util/rr-super-test.js';
+import SuperTester from './util/super-tester.js';
 import AuthorizedGenerator from './util/authorized-generator.js';
 
 const { expect } = chai;
@@ -15,8 +15,8 @@ describe('authorized create hook integration', function authorizedCreateHook() {
     const authorizedGenerator = new AuthorizedGenerator();
 
     const hxUser = new History();
-    const rrSuperTest = new RRSuperTest();
-    const shared = new SharedIntegration(rrSuperTest, authorizedGenerator);
+    const superTester = new SuperTester();
+    const shared = new SharedIntegration(superTester, authorizedGenerator);
 
     before(shared.setUpFn());
 

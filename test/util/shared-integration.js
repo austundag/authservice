@@ -11,20 +11,20 @@ import SharedSpec from './shared-spec.js';
 const { expect } = chai;
 
 export default class SharedIntegration {
-    constructor(rrSuperTest, generator) {
+    constructor(superTester, generator) {
         this.generator = generator;
-        this.rrSuperTest = rrSuperTest;
+        this.superTester = superTester;
         this.sharedSpec = new SharedSpec(generator);
     }
 
     setUpFn() {
-        const { rrSuperTest } = this;
+        const { superTester } = this;
         const self = this;
         return async function setup() {
             const app = await appgen.generate();
             self.sharedSpec.initModels(app.locals.models, self.generator);
             self.models = app.locals.models;
-            rrSuperTest.initialize(app);
+            superTester.initialize(app);
         };
     }
 
@@ -38,7 +38,7 @@ export default class SharedIntegration {
                 if (err) {
                     return done(err);
                 }
-                rrSuperTests.forEach((rrSuperTest) => rrSuperTest.initialize(app));
+                rrSuperTests.forEach((superTester) => superTester.initialize(app));
                 return done();
             });
         };
@@ -56,10 +56,10 @@ export default class SharedIntegration {
     }
 
     loginFn(user) {
-        const { rrSuperTest } = this;
+        const { superTester } = this;
         return function login() {
             const fullUser = { id: 1, role: 'admin', ...user };
-            return rrSuperTest.authBasic(fullUser);
+            return superTester.authBasic(fullUser);
         };
     }
 
@@ -69,21 +69,21 @@ export default class SharedIntegration {
             const user = _.cloneDeep(hxUser.client(index));
             user.username = user.username || user.email.toLowerCase();
             user.id = hxUser.id(index);
-            return self.rrSuperTest.authBasic(user);
+            return self.superTester.authBasic(user);
         };
     }
 
     logoutFn() {
-        const { rrSuperTest } = this;
+        const { superTester } = this;
         return function logout() {
-            rrSuperTest.resetAuth();
+            superTester.resetAuth();
         };
     }
 
     badLoginFn(login) {
-        const { rrSuperTest } = this;
+        const { superTester } = this;
         return function badLogin() {
-            return rrSuperTest.authBasic(login, 401);
+            return superTester.authBasic(login, 401);
         };
     }
 
@@ -93,12 +93,12 @@ export default class SharedIntegration {
 
     createUserFn(history, user, override) {
         const { generator } = this;
-        const { rrSuperTest } = this;
+        const { superTester } = this;
         return function createUser() {
             if (!user) {
                 user = generator.newUser(override);
             }
-            return rrSuperTest.post('/authorizeds', user, 201)
+            return superTester.post('/authorizeds', user, 201)
                 .then((res) => {
                     const server = { id: res.body.id, ...user };
                     history.push(user, server);
