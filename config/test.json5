@@ -7,7 +7,7 @@
     },
     db: {
          options: {
-            database: 'recregtest',
+            database: 'smauthtest',
             pool: {
                 idle: 1000,
             },

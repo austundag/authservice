@@ -44,4 +44,6 @@
     },
     clientBaseUrl: 'SM_AUTH_CLIENT_BASE_URL',
     tmpDirectory: 'SM_AUTH_TMP_DIRECTORY',
+    port: 'SM_AUTH_PORT',
+    cookieName: 'SM_AUTH_COOKIE_NAME',
 }

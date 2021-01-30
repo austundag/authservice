@@ -6,7 +6,7 @@
     db: {
         schema: 'public',
         options: {
-            database: 'recreg',
+            database: 'smauth',
             username: 'postgres',
             password: 'postgres',
             host: 'localhost',
